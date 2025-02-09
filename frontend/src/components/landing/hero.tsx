@@ -97,7 +97,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
       <Link href="/auth/signup" className="w-full sm:w-auto">
         <Button 
-          className="w-full bg-gradient-to-r from-indigo-500 to-indigo-700 text-white hover:opacity-90 transition-all duration-300 rounded-lg p-6"
+          className="w-full bg-gradient-to-r from-indigo-500 to-indigo-700 text-white hover:opacity-90 transition-all duration-300 rounded-xl p-6"
         >
           <span className="flex items-center justify-center gap-2 text-lg font-semibold">
             Start Creating
@@ -109,7 +109,7 @@ const Hero = () => {
       <Link href="#pricing" className="w-full sm:w-auto">
         <Button 
           variant="outline"
-          className="w-full border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white transition-all duration-300 rounded-lg p-6"
+          className="w-full border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white transition-all duration-300 rounded-xl p-6"
         >
           <span className="flex items-center justify-center gap-2 text-lg font-semibold">
             Free Trial

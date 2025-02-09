@@ -6,7 +6,7 @@ export class User extends Document {
   @Prop()
   email: string;
 
-  @Prop()
+  @Prop({ default: null })
   googleId?: string;
 
   @Prop()
@@ -17,6 +17,9 @@ export class User extends Document {
 
   @Prop()
   password: string;
+
+  @Prop({ enum: ['free', 'starter', 'premium'], default: 'free' })
+  plan: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -50,4 +50,10 @@ export class AuthController {
     const redirectUrl = this.configService.get<string>('FRONTEND_URL');
     res.redirect(`${redirectUrl}/auth/signin?token=${access_token}`);
   }
+
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  async me(@Req() req) {
+    return req.user;
+  }
 }

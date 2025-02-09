@@ -7,7 +7,7 @@ import { UsersService } from '../users/users.service';
 
 interface JwtPayload {
   email: string;
-  sub: string;
+  id: string;
 }
 
 @Injectable()
@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   async signin(user: User) {
-    const payload: JwtPayload = { email: user.email, sub: (user._id as string).toString() };
+    const payload: JwtPayload = { email: user.email, id: (user._id as string).toString() };
     return { access_token: this.jwtService.sign(payload) };
   }
 

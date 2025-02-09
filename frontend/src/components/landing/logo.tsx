@@ -11,7 +11,7 @@ const Logo = () => {
         alt="TrendSpark Logo"
         width={40}
         height={40}
-        className="object-contain rounded-md overflow-hidden"
+        className="object-contain rounded-[5px] overflow-hidden"
       />
       {/* Logo Title */}
       <span className="text-2xl font-bold bg-clip-text text-transparent text-white">

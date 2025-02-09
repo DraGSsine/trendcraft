@@ -35,13 +35,13 @@ export function Navbar() {
             <Link href="/auth/signin">
               <Button
                 variant="ghost"
-                className="text-sm font-medium text-white/70 hover:text-white transition-colors"
+                className="text-sm rounded-xl font-medium text-white/70 hover:text-white transition-colors"
               >
                 Sign In
               </Button>
             </Link>
             <Link href="#pricing">
-              <Button className="text-sm font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition-colors">
+              <Button className="text-sm rounded-xl font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition-colors">
                 Start Free Trial
               </Button>
             </Link>
@@ -53,7 +53,7 @@ export function Navbar() {
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="h-9 w-9 p-0 text-white hover:bg-indigo-900 transition-colors"
+                  className="h-9 w-9 p-0 rounded-xl text-white hover:bg-indigo-900 transition-colors"
                 >
                   <Menu className="h-5 w-5" />
                 </Button>
@@ -77,7 +77,7 @@ export function Navbar() {
                     <Link href="/auth/signin">
                       <Button
                         variant="ghost"
-                        className="justify-start text-white/70 hover:text-white transition-colors"
+                        className="justify-start rounded-xl text-white/70 hover:text-white transition-colors"
                       >
                         Sign In
                       </Button>
@@ -85,7 +85,7 @@ export function Navbar() {
                     <Link href="#pricing">
                       <Button
                         variant="ghost"
-                        className="justify-start bg-indigo-500 text-white hover:bg-indigo-600 transition-colors"
+                        className="justify-start rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 transition-colors"
                       >
                         Start Free Trial
                       </Button>

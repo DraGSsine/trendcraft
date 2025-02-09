@@ -80,7 +80,7 @@ const Pricing = () => {
               </ul>
               <Link href="/auth/signup">
                 <Button
-                  className={`w-full text-center ${
+                  className={`w-full text-center rounded-xl ${
                     plan.popular
                       ? "bg-indigo-500 text-white hover:bg-indigo-600 transition-colors"
                       : "bg-white/5 text-white hover:bg-white/10"
