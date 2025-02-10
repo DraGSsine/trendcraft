@@ -1,7 +1,11 @@
 import React from "react";
 
 const Page = () => {
-  return <div className=" bg-black text-yellow-700">Tawild Does not work on this page</div>;
+  return (
+    <div>
+      <h1>Dashboard</h1>
+    </div>
+  )
 };
 
 export default Page;

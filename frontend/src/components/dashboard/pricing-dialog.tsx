@@ -11,8 +11,9 @@ import { toast } from "@/hooks/use-toast";
 import { api } from "@/lib/axios";
 import { useUserInfo } from "@/lib/queries";
 import { useMutation } from "@tanstack/react-query";
-import { Check, Crown, Loader2, Sparkles, Zap } from "lucide-react";
+import { Check, Crown, Loader2, Zap } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const plans = [
   {
@@ -27,7 +28,7 @@ const plans = [
       "24-hour content scheduling",
       "Email support",
     ],
-    iconClass: "text-blue-500",
+    iconClass: "text-indigo-500",
     buttonVariant: "outline" as const,
   },
   {
@@ -44,7 +45,7 @@ const plans = [
       "Custom branding",
       "API access",
     ],
-    iconClass: "text-amber-500",
+    iconClass: "text-indigo-500",
     buttonVariant: "default" as const,
     popular: true,
   },
@@ -67,44 +68,52 @@ export function PricingDialog() {
       console.error(error);
       toast({
         variant: "destructive",
-        description:
-          "Failed to create checkout session. Please try again later.",
+        description: "Failed to create checkout session. Please try again later.",
       });
     },
   });
 
   if (data?.plan !== "free") return null;
+
   return (
     <Dialog open={true}>
-      <DialogContent className="sm:max-w-[900px] bg-zinc-900 border-zinc-800">
-        <DialogHeader>
-          <DialogTitle className="flex items-center justify-center gap-2 text-2xl font-bold">
-            <Sparkles className="w-6 h-6 text-indigo-400" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-zinc-200 to-zinc-400">
+      <DialogContent className="sm:max-w-[900px] bg-zinc-950 border-zinc-800">
+        <DialogHeader className="mb-8">
+          <div className="text-center space-y-4">
+            <DialogTitle className="text-3xl font-bold text-white">
               Choose Your Plan
-            </span>
-          </DialogTitle>
+            </DialogTitle>
+            <p className="text-zinc-400 text-sm">
+              Select the perfect plan to unlock all the features
+            </p>
+          </div>
         </DialogHeader>
-        <div className="grid md:grid-cols-2 gap-6 p-4">
+        <div className="grid md:grid-cols-2 gap-6 p-6">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative flex flex-col p-6 rounded-xl bg-zinc-800/50 border ${
-                plan.popular ? "border-amber-500/20" : "border-zinc-700/50"
-              }`}
+              className={cn(
+                "relative flex flex-col p-6 rounded-xl transition-colors duration-200",
+                "bg-zinc-900",
+                "border",
+                plan.popular
+                  ? "border-indigo-500"
+                  : "border-zinc-800"
+              )}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-medium bg-indigo-500 text-white">
                   Most Popular
                 </div>
               )}
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-3 mb-6">
                 <div
-                  className={`p-2 rounded-lg bg-zinc-800 ${
-                    plan.popular ? "bg-amber-500/10" : "bg-blue-500/10"
-                  }`}
+                  className={cn(
+                    "p-2 rounded-lg",
+                    plan.popular ? "bg-indigo-500/10" : "bg-indigo-500/10"
+                  )}
                 >
-                  <plan.icon className={`w-6 h-6 ${plan.iconClass}`} />
+                  <plan.icon className={cn("w-6 h-6", plan.iconClass)} />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-white">
@@ -124,29 +133,29 @@ export function PricingDialog() {
               <div className="flex-1 space-y-3 mb-6">
                 {plan.features.map((feature) => (
                   <div key={feature} className="flex items-center gap-2">
-                    <div className="flex-shrink-0">
-                      <Check className="w-5 h-5 text-emerald-500" />
-                    </div>
+                    <Check className="w-5 h-5 text-emerald-500 flex-shrink-0" />
                     <span className="text-sm text-zinc-300">{feature}</span>
                   </div>
                 ))}
               </div>
               <Button
                 onClick={() => {
-                  setPlanName(plan.name), mutate(plan.name.toLowerCase());
+                  setPlanName(plan.name);
+                  mutate(plan.name.toLowerCase());
                 }}
                 variant={plan.buttonVariant}
-                className={`w-full rounded-xl ${
+                className={cn(
+                  "w-full rounded-lg h-11",
                   plan.popular
-                    ? "bg-amber-500 hover:bg-amber-600 text-zinc-900"
-                    : "border-zinc-700 hover:border-zinc-600"
-                }`}
+                    ? "bg-indigo-500 text-white hover:bg-indigo-600"
+                    : "border-zinc-800 hover:bg-zinc-800"
+                )}
                 disabled={isPending}
               >
                 {isPending && plan.name === planName ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  "Upgrade"
+                  "Upgrade Now"
                 )}
               </Button>
             </div>

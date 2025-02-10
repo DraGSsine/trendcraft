@@ -36,7 +36,7 @@ const Testimonials = () => {
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Loved by{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r bg-indigo-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r bg-indigo-500 text-white">
               Content Creators
             </span>
           </h2>

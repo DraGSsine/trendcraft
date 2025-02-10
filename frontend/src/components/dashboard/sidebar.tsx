@@ -1,5 +1,5 @@
 "use client";
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
 import { Layout, Calendar, LogOut, Crown, Menu } from "lucide-react";
 import Link from "next/link";
@@ -12,8 +12,9 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import cookies from 'js-cookie'
-import { useUserInfo } from '@/lib/queries';
+import cookies from "js-cookie";
+import { useUserInfo } from "@/lib/queries";
+import { Progress } from "../ui/progress";
 
 const routes = [
   {
@@ -47,7 +48,7 @@ export function Sidebar() {
             side="left"
             className="w-64 p-0 bg-zinc-900 border-r border-zinc-800"
           >
-            <VisuallyHidden >
+            <VisuallyHidden>
               <SheetTitle>Menu</SheetTitle>
             </VisuallyHidden>
             <SidebarContent />
@@ -66,11 +67,11 @@ export function Sidebar() {
 function SidebarContent() {
   const pathname = usePathname();
   const handleLogout = () => {
-    cookies.remove('token')
-    window.location.href = '/'
-  }
-    const { data } = useUserInfo();
-  
+    cookies.remove("token");
+    window.location.href = "/";
+  };
+  const { data } = useUserInfo();
+
   return (
     <div className="flex h-full">
       <div className="relative flex w-full flex-col h-full bg-zinc-900 border-r border-zinc-800">
@@ -86,7 +87,7 @@ function SidebarContent() {
               key={route.href}
               href={route.href}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors",
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                 pathname === route.href
                   ? "bg-zinc-800 text-white"
                   : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
@@ -95,7 +96,7 @@ function SidebarContent() {
               <route.icon className="w-5 h-5" />
               <span className="font-medium">{route.label}</span>
               {pathname === route.href && (
-                <div className="ml-auto w-1 h-6 bg-indigo-500 rounded-full" />
+                <div className="ml-auto w-1 h-6 bg-indigo-500 text-white rounded-full" />
               )}
             </Link>
           ))}
@@ -103,28 +104,43 @@ function SidebarContent() {
 
         {/* Bottom Section */}
         <div className="p-4 space-y-4">
-          <div className="p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/50">
+          <div className="p-4 rounded-lg bg-zinc-800/50 border border-zinc-700/50">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Crown className="w-5 h-5 text-amber-500" />
-                <span className="font-medium text-white">{data?.plan + ' plan'}</span>
+                <Crown className="w-5 h-5 text-indigo-500" />
+                <span className="font-medium text-white">
+                  {data?.plan + " plan"}
+                </span>
               </div>
               <span className="text-xs font-medium text-zinc-400">Upgrade</span>
             </div>
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-zinc-400">Storage Used</span>
-                <span className="text-white font-medium">75%</span>
+              <div className="flex justify-between items-center rounded-lg">
+                <span className="text-sm font-medium text-neutral-300">
+                  Credits
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-semibold text-white">
+                    {data?.credits}
+                  </span>
+                  <span className="text-neutral-400">/</span>
+                  <span className="text-sm font-medium text-neutral-400">
+                    {data?.planLimit}
+                  </span>
+                </div>
               </div>
-              <div className="w-full h-1.5 bg-zinc-700/50 rounded-full overflow-hidden">
-                <div className="w-3/4 h-full bg-amber-500/90 rounded-full" />
-              </div>
+              <Progress
+                value={data?.credits}
+                max={
+                  data?.planLimit == "unlimited" ? 10000000000 : data?.planLimit
+                }
+              />
             </div>
           </div>
 
           <Button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-zinc-300 bg-zinc-800/50 border border-zinc-700/50 hover:bg-zinc-800 hover:text-white transition-colors"
+            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg text-zinc-300 bg-zinc-800/50 border border-zinc-700/50 hover:bg-zinc-800 hover:text-white transition-colors"
           >
             <LogOut className="w-5 h-5" />
             <span className="font-medium">Logout</span>
