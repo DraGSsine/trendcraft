@@ -20,6 +20,9 @@ export class User extends Document {
 
   @Prop({ enum: ['free', 'starter', 'premium'], default: 'free' })
   plan: string;
+
+  @Prop({ default: 0 })
+  credits: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

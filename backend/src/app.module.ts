@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -14,11 +15,13 @@ import { JwtModule } from '@nestjs/jwt';
     MongooseModule.forRoot(process.env.MONGODB_URI!),
     UsersModule,
     AuthModule,
+    PaymentsModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
+    PaymentsModule,
   ],
 })
 export class AppModule {}

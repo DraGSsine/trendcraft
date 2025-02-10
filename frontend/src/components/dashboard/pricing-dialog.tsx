@@ -7,8 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
+import { api } from "@/lib/axios";
 import { useUserInfo } from "@/lib/queries";
-import { Check, Crown, Sparkles, Zap } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { Check, Crown, Loader2, Sparkles, Zap } from "lucide-react";
+import { useState } from "react";
 
 const plans = [
   {
@@ -27,7 +31,7 @@ const plans = [
     buttonVariant: "outline" as const,
   },
   {
-    name: "Pro",
+    name: "Premium",
     price: "49",
     description: "For professionals who need more power",
     icon: Crown,
@@ -47,7 +51,28 @@ const plans = [
 ];
 
 export function PricingDialog() {
+  const [planName, setPlanName] = useState<string>("starter");
   const { data } = useUserInfo();
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (plan: string) => {
+      const response = await api.post("/payments/create-checkout-session", {
+        plan,
+      });
+      return response.data;
+    },
+    onSuccess: (data: any) => {
+      window.location.href = data.url;
+    },
+    onError: (error) => {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        description:
+          "Failed to create checkout session. Please try again later.",
+      });
+    },
+  });
+
   if (data?.plan !== "free") return null;
   return (
     <Dialog open={true}>
@@ -107,14 +132,22 @@ export function PricingDialog() {
                 ))}
               </div>
               <Button
+                onClick={() => {
+                  setPlanName(plan.name), mutate(plan.name.toLowerCase());
+                }}
                 variant={plan.buttonVariant}
                 className={`w-full rounded-xl ${
                   plan.popular
                     ? "bg-amber-500 hover:bg-amber-600 text-zinc-900"
                     : "border-zinc-700 hover:border-zinc-600"
                 }`}
+                disabled={isPending}
               >
-                Get Started
+                {isPending && plan.name === planName ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  "Upgrade"
+                )}
               </Button>
             </div>
           ))}
