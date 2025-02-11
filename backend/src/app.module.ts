@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PaymentsModule } from './payments/payments.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PaymentsModule } from './payments/payments.module';
       signOptions: { expiresIn: '1d' },
     }),
     PaymentsModule,
+    AiModule,
   ],
 })
 export class AppModule {}

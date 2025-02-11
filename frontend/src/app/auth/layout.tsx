@@ -1,6 +1,4 @@
 import React, { ReactNode } from "react";
-import { Sparkles } from "lucide-react";
-import Link from "next/link";
 import Trusted from "@/components/landing/trusted";
 import Logo from "@/components/landing/logo";
 
@@ -45,9 +43,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
       </div>
 
       {/* Right Side - Sign Up Form */}
-      <div className="flex-1 flex items-center justify-center">
-        {children}
-      </div>
+      <div className="flex-1 flex items-center justify-center">{children}</div>
     </div>
   );
 };

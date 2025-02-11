@@ -33,7 +33,7 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile Navigation */}
-      <div className="md:hidden">
+      <div className="md:hidden ">
         <Sheet>
           <SheetTrigger asChild>
             <Button
