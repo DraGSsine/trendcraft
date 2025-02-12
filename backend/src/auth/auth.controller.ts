@@ -47,7 +47,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
     const { access_token } = await this.authService.signin(req.user);
-    const redirectUrl = this.configService.get<string>('FRONTEND_URL');
+    const redirectUrl = this.configService.get<string>('TC_FRONTEND_URL');
     res.redirect(`${redirectUrl}/auth/signin?token=${access_token}`);
   }
 

@@ -36,8 +36,8 @@ export class PaymentsService {
         },
       ],
       mode: 'subscription',
-      success_url: `${this.configService.get<string>('FRONTEND_URL')}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: this.configService.get<string>('FRONTEND_URL'),
+      success_url: `${this.configService.get<string>('TC_FRONTEND_URL')}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: this.configService.get<string>('TC_FRONTEND_URL'),
       metadata: {
         userId,
         plan,
