@@ -120,13 +120,13 @@ export default function Hero() {
           </div>
 
           {/* Dashboard Preview */}
-          <div className="relative mx-auto max-w-5xl">
-            <div className="relative bg-zinc-900 rounded-xl border border-zinc-800 p-4 shadow-2xl">
+          <div className="relative mx-auto max-w-[90vw] lg:max-w-[95vw]">
+            <div className="relative bg-zinc-900 rounded-xl border border-zinc-800 p-2 sm:p-4 shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent rounded-xl" />
               <Image
-                width={1213}
-                height={607}
-                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426&ixlib=rb-4.0.3"
+                width={1920}
+                height={1080}
+                src="/bg.png"
                 alt="Analytics Dashboard"
                 className="w-full rounded-lg shadow-2xl"
                 priority

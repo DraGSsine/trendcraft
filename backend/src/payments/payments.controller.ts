@@ -19,8 +19,9 @@ export class PaymentsController {
     return this.paymentsService.createCheckoutSession(plan, req.user.id);
   }
 
-  @Post('webhook')
+  @Post('webhok')
   async stripeWebhook(@Request() req, @Response() res) {
+    console.log('Stripe webhook called');
     return this.paymentsService.stripeWebhook(req, res);
   }
 }

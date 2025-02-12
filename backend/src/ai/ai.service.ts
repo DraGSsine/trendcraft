@@ -1,129 +1,133 @@
-// ai/ai.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { GenerateContentDto } from './dto/generate-content.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from 'src/model/UserSchema';
+import OpenAI from 'openai';
 
 @Injectable()
 export class AiService {
-  private genAI: GoogleGenerativeAI;
-  private model: any;
-  private globalTrendCache: { trends: any; timestamp: number } | null = null;
-  private readonly ONE_DAY = 24 * 60 * 60 * 1000;
+  private openai: any;
+  private trendCache: { trends: any; timestamp: number } | null = null;
+  private readonly CACHE_DURATION = 1 * 60 * 60 * 1000; // 1 hour cache
 
-  constructor(private configService: ConfigService) {
-    this.genAI = new GoogleGenerativeAI(
-      this.configService.get<string>('GEMINI_API_KEY')!
-    );
-    this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  constructor(
+    private configService: ConfigService,
+    @InjectModel(User.name) private userModel: Model<User>,
+  ) {
+    this.openai = new OpenAI({
+      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
+    });
   }
 
-  private async fetchTrendingTopics(timeRange: string) {
+  private async getTrends(timeRange: number, niche: string) {
     const currentTime = Date.now();
 
     if (
-      timeRange === '24' &&
-      this.globalTrendCache &&
-      currentTime - this.globalTrendCache.timestamp < this.ONE_DAY
+      this.trendCache &&
+      currentTime - this.trendCache.timestamp < this.CACHE_DURATION
     ) {
-      return this.globalTrendCache.trends;
+      return this.trendCache.trends;
     }
 
     try {
       const serperApiKey = this.configService.get<string>('SERP_API_KEY');
-      const url = `https://serpapi.com/search.json?engine=google_trends_trending_now&hours=${timeRange}&api_key=${serperApiKey}`;
+      const url = `https://serpapi.com/search.json?engine=google_trends_trending_now&geo=US&hours=${timeRange}&hl=en&api_key=${serperApiKey}`;
 
       const response = await fetch(url);
       const data = await response.json();
-
       const trends = data.trending_searches.map((trend: any) => ({
-        title: trend.query,
-        relatedQueries: trend.trend_breakdown?.slice(0, 5) || [],
-        categories: trend?.categories?.map((cat: any) => cat?.name) || [],
+        topic: trend.query,
+        relatedQueries: trend.trend_breakdown?.slice(0, 3) || [],
+        category:
+          trend?.categories?.map((c: any) => c.name.toLowerCase()) || [],
       }));
 
-      if (timeRange === '24') {
-        this.globalTrendCache = {
-          trends,
-          timestamp: currentTime,
-        };
-      }
-
-      return trends;
+      this.trendCache = {
+        trends,
+        timestamp: currentTime,
+      };
+      // Filter trends based on the niche and return top 5
+      if (niche.toLocaleLowerCase() === 'all') return trends.slice(0, 5);
+      const filteredTrends = trends.filter((trend: any) =>
+        trend.category.includes(niche.toLocaleLowerCase()),
+      );
+      if (filteredTrends.length === 0)
+        throw new Error('No trends found for the specified niche');
+      return filteredTrends.slice(0, 5);
     } catch (error) {
-      console.error('Trending Topics Error:', error);
+      console.error('Error fetching trends:', error);
       throw new Error('Failed to fetch trending topics');
     }
   }
 
-  private async generateContentIdeas(
-    keyword: string,
-    channelDescription: string,
-    trends: any[]
+  async generateContentIdeas(
+    platform: string,
+    niche: string,
+    timeRange: number,
+    userId: string,
   ) {
-    const prompt = `
-    As a YouTube content strategist, create a video content plan that combines the keyword "${keyword}" with current trends and the channel's focus: "${channelDescription}".
-
-    Current trending topics:
-    ${trends.map((t) => `- ${t.title} (Related: ${t.relatedQueries.join(', ')})`).join('\n')}
-
-    Create a detailed video content plan that includes:
-    1. An attention-grabbing title (under 60 characters)
-    2. An engaging description (120-150 characters)
-    3. A complete video script (minimum 500 words)
-    4. 5 relevant hashtags
-    5. Estimated view potential (number)
-    6. Competition level (LOW/MEDIUM/HIGH)
-    7. 3 hook ideas
-    8. Thumbnail text suggestion
-    9. Search volume estimate (1-100)
-
-    Response format:
-    {
-      "title": "string",
-      "description": "string",
-      "script": "string",
-      "hashtags": ["string"],
-      "trendingTopics": ["string"],
-      "searchVolume": number,
-      "estimatedViews": number,
-      "competitionLevel": "string",
-      "suggestedThumbnailText": "string",
-      "hooks": ["string"]
-    }`;
-
     try {
-      const result = await this.model.generateContent(prompt);
-      const content = result.response.text();
-      return JSON.parse(
-        content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-      );
+      const trends = await this.getTrends(timeRange, niche);
+
+      const prompt = `As a content strategist for ${platform}, analyze these current trends and develop three content ideas for an influencer in the ${niche} niche:
+
+Current Trends:
+${JSON.stringify(trends, null, 2)}
+
+Create three content pieces that:
+1. Connect one specific trend to the ${niche} niche
+2. Are optimized for ${platform}'s best practices
+3. Have viral potential with engaging hooks
+4. Target the ${niche} audience
+
+Respond ONLY with a valid JSON array containing exactly three content ideas in this format:
+[
+  {
+    "contentType": "post/video/reel/story",
+    "title": "Catchy title connecting the trend to ${niche}",
+    "hook": "Attention-grabbing opening that mentions the trend",
+    "description": "Detailed content description showing how the trend relates to ${niche}",
+    "trendConnection": "Explicit explanation of how this content connects to [specific trend]",
+    "hashtags": ["Trend-related tag", "Niche-related tag", "Platform-specific tag"],
+    "estimatedEngagement": "HIGH/MEDIUM/LOW"
+  }
+]`;
+
+      // Call the OpenAI Chat Completion endpoint
+      const completion = await this.openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are a content strategist for a social media platform.',
+          },
+          { role: 'user', content: prompt },
+        ],
+        temperature: 0.7,
+      });
+
+      // Extract the text response from the OpenAI API response
+      const content = completion.choices[0].message?.content;
+      if (!content) {
+        throw new Error('No content received from OpenAI');
+      }
+
+      // Clean and parse the JSON response (strip markdown formatting if present)
+      const cleanJson = content
+        .replace(/```json\n?/g, '')
+        .replace(/```\n?/g, '')
+        .trim();
+      console.log('cleanJson', cleanJson);
+      const parsedContent = JSON.parse(cleanJson);
+
+      // Update user credits
+      await this.userModel.updateOne({ _id: userId }, { $inc: { credits: 1 } });
+      return parsedContent;
     } catch (error) {
       console.error('Content Generation Error:', error);
       throw new Error('Failed to generate content ideas');
-    }
-  }
-
-  async generateContent(
-    generateContentDto: GenerateContentDto
-  ): Promise<any> {
-    try {
-      const { keyword, channelDescription, timeRange } = generateContentDto;
-
-      // Fetch trending topics
-      const trends = await this.fetchTrendingTopics(timeRange || '24');
-
-      // Generate content ideas
-      const contentIdeas = await this.generateContentIdeas(
-        keyword,
-        channelDescription,
-        trends
-      );
-
-      return contentIdeas;
-    } catch (error) {
-      console.error('AI Service Error:', error);
-      throw new Error(`Content generation failed: ${error.message}`);
     }
   }
 }

@@ -21,12 +21,7 @@ const routes = [
     label: "Dashboard",
     icon: Layout,
     href: "/dashboard",
-  },
-  {
-    label: "Schedule",
-    icon: Calendar,
-    href: "/schedule",
-  },
+  }
 ];
 
 export function Sidebar() {
@@ -71,7 +66,7 @@ function SidebarContent() {
     window.location.href = "/";
   };
   const { data } = useUserInfo();
-
+  const limitPercentage = (data?.credits / data?.planLimit) * 100;
   return (
     <div className="flex h-full">
       <div className="relative flex w-full flex-col h-full bg-zinc-900 border-r border-zinc-800">
@@ -112,7 +107,6 @@ function SidebarContent() {
                   {data?.plan + " plan"}
                 </span>
               </div>
-              <span className="text-xs font-medium text-zinc-400">Upgrade</span>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between items-center rounded-lg">
@@ -130,10 +124,7 @@ function SidebarContent() {
                 </div>
               </div>
               <Progress
-                value={data?.credits}
-                max={
-                  data?.planLimit == "unlimited" ? 10000000000 : data?.planLimit
-                }
+                value={limitPercentage}
               />
             </div>
           </div>

@@ -1,7 +1,52 @@
 import React, { ReactNode } from "react";
 import Trusted from "@/components/landing/trusted";
 import Logo from "@/components/landing/logo";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: {
+    default: "Join TrendCraft AI | Create Your Account",
+    template: "%s | TrendCraft AI Authentication",
+  },
+  description:
+    "Join TrendCraft AI's community of creators. Access AI-powered content generation, trending insights, and tools to amplify your social media presence across all major platforms.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://trendcraft.pro/auth/signup",
+    title: "Join TrendCraft AI | Create Your Account",
+    description:
+      "Access AI-powered content generation and trending insights. Join 100+ creators already transforming their social media presence.",
+    images: [
+      {
+        url: "https://trendcraft.pro/_next/image?url=%2Fbg.png&w=3840&q=75",
+        width: 1200,
+        height: 630,
+        alt: "TrendCraft AI Authentication Preview",
+      },
+    ],
+    siteName: "TrendCraft AI",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Join TrendCraft AI | Create Your Account",
+    description:
+      "Access AI-powered content generation and trending insights. Join 100+ creators already transforming their social media presence.",
+    images: ["https://trendcraft.pro/_next/image?url=%2Fbg.png&w=3840&q=75"],
+  },
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: true,
+      noimageindex: true,
+    },
+  },
+  alternates: {
+    canonical: "https://trendcraft.pro/auth/signup",
+  },
+};
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex min-h-screen">

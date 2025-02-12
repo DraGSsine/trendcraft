@@ -18,32 +18,28 @@ import { cn } from "@/lib/utils";
 const plans = [
   {
     name: "Starter",
-    price: "19",
-    description: "Perfect for individuals and small teams",
+    price: "5",
+    description: "Generate up to 40 content ideas per month",
     icon: Zap,
     features: [
-      "5 AI-generated posts per day",
-      "Basic trend analytics",
-      "3 social media accounts",
-      "24-hour content scheduling",
-      "Email support",
+      "AI-powered content generation",
+      "Google Trends integration",
+      "Real-time topic suggestions",
+      "24/7 support",
     ],
     iconClass: "text-indigo-500",
     buttonVariant: "outline" as const,
   },
   {
     name: "Premium",
-    price: "49",
-    description: "For professionals who need more power",
+    price: "9",
+    description: "Unlimited content ideas generation",
     icon: Crown,
     features: [
-      "Unlimited AI-generated posts",
-      "Advanced trend analytics",
-      "Unlimited social accounts",
-      "30-day content scheduling",
-      "Priority support",
-      "Custom branding",
-      "API access",
+      "AI-powered content generation",
+      "Google Trends integration",
+      "Real-time topic suggestions",
+      "24/7 support",
     ],
     iconClass: "text-indigo-500",
     buttonVariant: "default" as const,
@@ -73,7 +69,7 @@ export function PricingDialog() {
     },
   });
 
-  if (data?.plan !== "free") return null;
+  if (data?.plan !== "none") return null;
 
   return (
     <Dialog open={true}>

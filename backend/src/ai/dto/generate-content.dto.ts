@@ -1,14 +1,13 @@
 // ai/dto/generate-content.dto.ts
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 
 export class GenerateContentDto {
   @IsString()
-  keyword: string;
+  platform: string;
 
   @IsString()
-  channelDescription: string;
+  niche: string;
 
-  @IsOptional()
-  @IsString()
-  timeRange?: string = '24';
+  @IsNumber()
+  timeRange: number;
 }
