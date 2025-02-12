@@ -16,7 +16,7 @@ export class AiService {
     @InjectModel(User.name) private userModel: Model<User>,
   ) {
     this.openai = new OpenAI({
-      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
+      apiKey: this.configService.get<string>('TC_OPENAI_API_KEY'),
     });
   }
 
@@ -31,7 +31,7 @@ export class AiService {
     }
 
     try {
-      const serperApiKey = this.configService.get<string>('SERP_API_KEY');
+      const serperApiKey = this.configService.get<string>('TC_SERP_API_KEY');
       const url = `https://serpapi.com/search.json?engine=google_trends_trending_now&geo=US&hours=${timeRange}&hl=en&api_key=${serperApiKey}`;
 
       const response = await fetch(url);

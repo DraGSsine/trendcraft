@@ -12,14 +12,14 @@ export class PaymentsService {
   private stripeClient: any;
   private plans = {
     free: this.configService.get<string>('FREE_PRICE_ID')!,
-    starter: this.configService.get<string>('STARTER_PRICE_ID')!,
-    premium: this.configService.get<string>('PREMIUM_PRICE_ID')!,
+    starter: this.configService.get<string>('TC_STARTER_PRICE_ID')!,
+    premium: this.configService.get<string>('TC_PREMIUM_PRICE_ID')!,
   };
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private configService: ConfigService,
   ) {
-    const key = this.configService.get<string>('STRIPE_SECRET_KEY');
+    const key = this.configService.get<string>('TC_STRIPE_SECRET_KEY');
     if (!key) {
       throw new Error('Missing Stripe secret key');
     }
@@ -49,7 +49,7 @@ export class PaymentsService {
 
   async stripeWebhook(req: any, res: Response) {
     const sig = req.headers['stripe-signature'];
-    const key = this.configService.get<string>('STRIPE_WEBHOOK_SECRET');
+    const key = this.configService.get<string>('TC_STRIPE_WEBHOOK_SECRET');
     if (!key) {
       throw new Error('Missing Stripe webhook secret');
     }
