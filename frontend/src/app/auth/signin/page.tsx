@@ -10,7 +10,7 @@ import GoogleAuthButton from "../GoogleAuthButton";
 import cookies from "js-cookie";
 import { z } from "zod";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
 
@@ -44,12 +44,12 @@ export default function SigninPage() {
         description: "Signed in successfully!",
       });
     },
-    onError: (error: any) => {
-      toast({
-        description: error.response.data.message,
-        variant: "destructive",
-      });
-    },
+    onError: (error: AxiosError<{ message?: string }>) => {
+          toast({
+            description: error.response?.data?.message || "An error occurred",
+            variant: "destructive",
+          });
+        },
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -189,7 +189,7 @@ export default function SigninPage() {
 
         {/* Footer */}
         <p className="text-center text-sm text-zinc-500">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/auth/signup"
             className="text-white hover:text-violet-400 transition-colors"

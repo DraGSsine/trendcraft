@@ -95,6 +95,7 @@ export default function Page() {
       });
     },
     onError: (error) => {
+      console.error(error);
       toast({
         variant: "destructive",
         description:

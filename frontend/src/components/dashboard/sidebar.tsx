@@ -1,7 +1,7 @@
 "use client";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
-import { Layout, Calendar, LogOut, Crown, Menu } from "lucide-react";
+import { Layout, LogOut, Crown, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "../landing/logo";

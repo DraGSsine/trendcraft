@@ -41,7 +41,7 @@ const Testimonials = () => {
             </span>
           </h2>
           <p className="text-white/70 text-xl max-w-2xl mx-auto">
-            Join thousands of satisfied creators who've transformed their
+            Join thousands of satisfied creators who&apos;ve transformed their
             content strategy
           </p>
         </div>
@@ -67,7 +67,7 @@ const Testimonials = () => {
                   <p className="text-white/60">{testimonial.role}</p>
                 </div>
               </div>
-              <p className="text-white/80 text-lg">"{testimonial.quote}"</p>
+              <p className="text-white/80 text-lg">&quot;{testimonial.quote}&quot;</p>
             </div>
           ))}
         </div>
