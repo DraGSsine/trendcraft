@@ -32,12 +32,10 @@ export default function Pricing() {
   return (
     <section id="pricing" className="py-24 relative bg-zinc-950">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px]" />
-      
+
       <div className="container mx-auto px-6 relative">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Simple Pricing
-          </h2>
+          <h2 className="text-4xl font-bold text-white mb-4">Simple Pricing</h2>
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
             Choose your plan and start generating trending content ideas
           </p>
@@ -53,7 +51,7 @@ export default function Pricing() {
               )}
             >
               <div className="absolute -inset-1 rounded-xl bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-              
+
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-medium bg-indigo-500 text-white">
                   Most Popular
@@ -75,9 +73,7 @@ export default function Pricing() {
                   <span className="text-zinc-400">/month</span>
                 </div>
 
-                <p className="text-zinc-400 text-sm mb-8">
-                  {plan.description}
-                </p>
+                <p className="text-zinc-400 text-sm mb-8">{plan.description}</p>
 
                 <ul className="space-y-4 mb-8">
                   {sharedFeatures.map((feature, featureIndex) => (
@@ -91,17 +87,16 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <Link href="/auth/signup" className="block">
-                  <Button 
-                    className={cn(
-                      "w-full h-11 rounded-lg transition-colors",
-                      plan.popular 
-                        ? "bg-indigo-500 hover:bg-indigo-500 text-white"
-                        : "bg-zinc-800 hover:bg-zinc-700 text-white"
-                    )}
-                  >
-                    Get Started
-                  </Button>
+                <Link
+                  href="/auth/signup"
+                  className={cn(
+                    " h-11 rounded-lg transition-colors w-full py-2 block text-center ",
+                    plan.popular
+                      ? "bg-indigo-500 hover:bg-indigo-500 text-white"
+                      : "bg-zinc-800 hover:bg-zinc-700 text-white"
+                  )}
+                >
+                  Get Started
                 </Link>
               </div>
             </div>

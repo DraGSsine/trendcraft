@@ -19,7 +19,7 @@ import { AiModule } from './ai/ai.module';
     PaymentsModule,
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET,
+      secret: process.env.TC_JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
     PaymentsModule,

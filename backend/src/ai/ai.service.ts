@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, plugin } from 'mongoose';
 import { User } from 'src/model/UserSchema';
 import OpenAI from 'openai';
 
@@ -15,8 +15,16 @@ export class AiService {
     private configService: ConfigService,
     @InjectModel(User.name) private userModel: Model<User>,
   ) {
+    // this.openai = new OpenAI({
+    //   apiKey: this.configService.get<string>('TC_OPENAI_API_KEY'),
+    // });
     this.openai = new OpenAI({
-      apiKey: this.configService.get<string>('TC_OPENAI_API_KEY'),
+      baseURL: 'https://openrouter.ai/api/v1',
+      apiKey: this.configService.get<string>('TC_OPENROUTER_API_KEY'),
+      defaultHeaders: {
+        'HTTP-Referer': 'https://trendcraft.pro',
+        'X-Title': 'https://trendcraft.pro',
+      },
     });
   }
 
@@ -97,6 +105,7 @@ Respond ONLY with a valid JSON array containing exactly three content ideas in t
       // Call the OpenAI Chat Completion endpoint
       const completion = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini',
+        plugin: [{ id: 'web' }],
         messages: [
           {
             role: 'system',

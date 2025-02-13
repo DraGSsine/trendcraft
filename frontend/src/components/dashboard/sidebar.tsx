@@ -104,7 +104,7 @@ function SidebarContent() {
               <div className="flex items-center gap-2">
                 <Crown className="w-5 h-5 text-indigo-500" />
                 <span className="font-medium text-white">
-                  {data?.plan + " plan"}
+                  {data?.plan || "" + " plan"}
                 </span>
               </div>
             </div>
@@ -115,11 +115,11 @@ function SidebarContent() {
                 </span>
                 <div className="flex items-center gap-2">
                   <span className="text-base font-semibold text-white">
-                    {data?.credits}
+                    {data?.credits || 0}
                   </span>
                   <span className="text-neutral-400">/</span>
                   <span className="text-sm font-medium text-neutral-400">
-                    {data?.planLimit}
+                    {data?.planLimit || 0}
                   </span>
                 </div>
               </div>

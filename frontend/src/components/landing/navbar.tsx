@@ -24,13 +24,13 @@ export function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:items-center md:space-x-6">
           {navigation.map((item) => (
-            <a
+            <Link
               key={item.name}
               href={item.href}
               className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
             >
               {item.name}
-            </a>
+            </Link>
           ))}
           <Link href="/auth/signin">
             <Button variant="ghost" className="text-sm text-white/70 hover:text-white">
@@ -38,7 +38,7 @@ export function Navbar() {
             </Button>
           </Link>
           <Link href="#pricing">
-            <Button className="text-sm bg-indigo-500 text-white text-zinc-900 hover:bg-indigo-500 text-white transition-all rounded-lg px-6 py-2">
+            <Button className="text-sm bg-indigo-500 text-white hover:bg-indigo-500 transition-all rounded-lg px-6 py-2">
               Start Free Trial
             </Button>
           </Link>
@@ -62,14 +62,14 @@ export function Navbar() {
             >
               <div className="flex flex-col space-y-6 mt-8">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
                     href={item.href}
                     className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
                 <div className="flex flex-col space-y-4 pt-4 border-t border-white/10">
                   <Link href="/auth/signin">
@@ -78,7 +78,7 @@ export function Navbar() {
                     </Button>
                   </Link>
                   <Link href="#pricing">
-                    <Button className="bg-indigo-500 text-white text-zinc-900 hover:bg-indigo-500 text-white transition-all rounded-lg">
+                    <Button className="bg-indigo-500 text-white hover:bg-indigo-500 transition-all rounded-lg">
                       Start Free Trial
                     </Button>
                   </Link>
